@@ -1,0 +1,60 @@
+sources:
+  - name: demo_src
+    description: Данные из бд авиаперелетов 
+    database: dwh_flight
+    schema: demo_src
+    tables:
+      - name: boarding_passes
+        description: '{{ doc("boarding_passes_description") }}'
+        columns:
+          - name: ticket_no
+            description: Номер билета
+          - name: flight_id 
+            description: Идентификатор рейса
+          - name: boarding_no 
+            description: Номер посадочного талона
+          - name: seat_no 
+            description: Номер места
+      - name: flights
+        description:  Рейсы
+        columns:
+          - name: flight_id
+            description: Код аэропорта
+          - name: flight_no
+            description: Номер маршрута
+          - name: scheduled_departure
+            description: Время вылета по расписанию
+          - name: scheduled_arrival
+            description: Время прилёта по расписания
+          - name: departure_airport
+          - name: arrival_airport
+          - name: status
+            description: Статус рейса
+          - name: aircraft_code
+          - name: actual_departure
+            description: Фактическое время вылета
+          - name: actual_arrival
+            description: Фактическое время прилёта
+        freshness: 
+            warn_after:
+              count: 600000
+              period: hour
+            error_after:
+              count: 10000
+              period: day
+            
+        loaded_at_field: actual_departure::timestamp
+      - name: ticket_flights
+        columns:
+          - name: ticket_no 
+          - name: flight_id
+          - name: fare_conditions
+          - name: amount
+      - name: tickets
+        columns:
+          - name: ticket_no
+          - name: book_ref
+          - name: passenger_id
+          - name: passenger_name
+          - name: contact_data
+        
